@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Friender</string>
+    <string name="role"><b>Role:</b></string>
+    <string name="skill"><b>Skill:</b></string>
+    <string name="email"><b>Email:</b></string>
+</resources>
