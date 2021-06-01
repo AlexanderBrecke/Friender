@@ -1,5 +1,6 @@
 package com.jorfald.friender
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,13 +11,14 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.jorfald.friender.R
 import com.jorfald.friender.Utils
-import com.jorfald.friender.database.ObjectClass
+import com.jorfald.friender.database.PersonObject
 import com.squareup.picasso.Picasso
 
 class FriendsView(context: Context) : FrameLayout(context) {
     private val view: View = LayoutInflater.from(context).inflate(R.layout.friends_view, this)
 
-    fun setData(objectClass: ObjectClass) {
+    @SuppressLint("SetTextI18n")
+    fun setData(objectClass: PersonObject) {
         view.findViewById<TextView>(R.id.friend_name_text).text =
             Utils.getFullName(objectClass.first_name, objectClass.last_name) + " (" + Utils.getAge(
                 2021,

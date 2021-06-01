@@ -3,9 +3,12 @@ package com.jorfald.friender.database
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.gson.Gson
 
-@Entity(tableName = "table_one")
-data class ObjectClass(
+val gson = Gson()
+
+@Entity(tableName = "friend_table")
+data class PersonObject(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val first_name: String,
@@ -21,7 +24,11 @@ data class ObjectClass(
     val address: ObjectClass3,
 
     val imageUrl: String?
-)
+) {
+    companion object{
+        public fun fromJson(jsonString:String): PersonObject = gson.fromJson(jsonString, PersonObject::class.java)
+    }
+}
 
 data class ObjectClass2(
     val title: String,

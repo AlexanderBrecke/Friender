@@ -3,11 +3,11 @@ package com.jorfald.friender.adapters
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jorfald.friender.FriendsView
-import com.jorfald.friender.database.ObjectClass
+import com.jorfald.friender.database.PersonObject
 
 class FriendsAdapter(
-    var all: List<ObjectClass>,
-    val crossClicked: ((ObjectClass) -> Unit)? = null
+    var all: List<PersonObject>,
+    val crossClicked: ((PersonObject) -> Unit)? = null
 ) :
     RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 

@@ -7,6 +7,9 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.jorfald.friender.database.ObjectClass2
 import com.jorfald.friender.database.ObjectClass3
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object Utils {
     fun getAge(thisYear: Int, dateOfBirth: String): String {
@@ -73,8 +76,13 @@ object Utils {
 
     fun getProfilePictureUrl(gender: String): String {
         val number = (0..99).random()
-        val isMale = (0..1).random()
 
-        return "https://randomuser.me/api/portraits/${if (isMale == 0) "men" else "women"}/$number.jpg"
+        return "https://randomuser.me/api/portraits/${if (isMale(gender)) "men" else "women"}/$number.jpg"
+    }
+
+    fun runFunctionAsCoroutine(functionToRun:()->Unit){
+        CoroutineScope(Dispatchers.IO).launch {
+            functionToRun()
+        }
     }
 }
