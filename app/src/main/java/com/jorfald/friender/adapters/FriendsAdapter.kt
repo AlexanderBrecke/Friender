@@ -4,10 +4,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jorfald.friender.FriendsView
 import com.jorfald.friender.database.PersonObject
+import com.jorfald.friender.interfaces.IRecyclerViewEventListener
 
 class FriendsAdapter(
-    var all: List<PersonObject>,
-    val crossClicked: ((PersonObject) -> Unit)? = null
+    private var dataset: List<PersonObject>,
+    private val recyclerEventListener:IRecyclerViewEventListener
 ) :
     RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder>() {
 
@@ -25,13 +26,18 @@ class FriendsAdapter(
     }
 
     override fun onBindViewHolder(holder: FriendsViewHolder, position: Int) {
-        holder.view.setData(all[position])
+        holder.view.setData(dataset[position])
         holder.view.setCrossListener {
-            //TODO: "Delete friend..."
+            recyclerEventListener.onCrossClickListener(dataset[position])
         }
     }
 
     override fun getItemCount(): Int {
-        return all.size
+        return dataset.size
+    }
+
+    fun updateData(newData:List<PersonObject>){
+        dataset = newData
+        notifyDataSetChanged()
     }
 }

@@ -1,10 +1,7 @@
 package com.jorfald.friender.fragments
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +9,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
 import com.jorfald.friender.FrienderApplication
 import com.jorfald.friender.MainActivity
 import com.jorfald.friender.R
@@ -27,9 +21,7 @@ import com.jorfald.friender.database.PersonObject
 import com.jorfald.friender.repositories.FriendRepository
 import com.jorfald.friender.viewmodels.PersonViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
-import okhttp3.internal.Util
 import java.util.*
 
 class MainFragment: Fragment() {
@@ -51,8 +43,6 @@ class MainFragment: Fragment() {
     private lateinit var checkButton:ImageView
     private lateinit var crossButton:ImageView
 
-    private val friendRepo:FriendRepository = FriendRepository()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,6 +55,7 @@ class MainFragment: Fragment() {
 
         viewModel = ViewModelProvider(this).get(PersonViewModel::class.java)
 
+        checkButton = root.check_button
         crossButton = root.cross_button
         friendsButton = root.my_friends_button
 
@@ -86,7 +77,7 @@ class MainFragment: Fragment() {
         loader.visibility = View.VISIBLE
         setClickListeners()
         bindObservers()
-        viewModel.updatePerson(queue)
+        if(viewModel.randomPerson.value == null) viewModel.getRandomPerson()
 
     }
 
@@ -94,19 +85,32 @@ class MainFragment: Fragment() {
         friendsButton.setOnClickListener {
             (activity as MainActivity).navigate(R.id.navigation_friends)
         }
+        enableCheckAndCrossButtons()
+    }
 
+    private fun enableCheckAndCrossButtons(){
         crossButton.setOnClickListener{
             getNewPerson()
         }
+        checkButton.setOnClickListener {
+            addToFriends()
+        }
+    }
+
+    private fun disableCheckAndCrossButtons(){
+        checkButton.setOnClickListener {}
+        crossButton.setOnClickListener {}
     }
 
     private fun getNewPerson(){
         loader.visibility = View.VISIBLE
-        viewModel.updatePerson(queue)
+        viewModel.getRandomPerson()
+        disableCheckAndCrossButtons()
     }
 
     private fun addToFriends(){
-
+        viewModel.addPersonToDatabase()
+        getNewPerson()
     }
 
 
@@ -130,8 +134,13 @@ class MainFragment: Fragment() {
         employmentTextView.text = Utils.getEmploymentText(applicationContext,person.employment)
         placeTextView.text = Utils.getPlaceText(person.address)
 
-        Picasso.get().load(Utils.getProfilePictureUrl(person.gender)).into(profilePicture)
+        val pictureString = Utils.getProfilePictureUrl(person.gender)
+        if(person.imageUrl == null){
+            person.imageUrl = pictureString
+        }
+        Picasso.get().load(person.imageUrl).into(profilePicture)
         loader.visibility = View.GONE
+        enableCheckAndCrossButtons()
 
     }
 

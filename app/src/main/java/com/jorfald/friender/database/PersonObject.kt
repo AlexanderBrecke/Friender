@@ -23,10 +23,10 @@ data class PersonObject(
     @Embedded
     val address: ObjectClass3,
 
-    val imageUrl: String?
+    var imageUrl: String?
 ) {
     companion object{
-        public fun fromJson(jsonString:String): PersonObject = gson.fromJson(jsonString, PersonObject::class.java)
+        fun fromJson(jsonString:String): PersonObject = gson.fromJson(jsonString, PersonObject::class.java)
     }
 }
 
