@@ -1,5 +1,3 @@
-@file:Suppress("RedundantIf", "LiftReturnOrAssignment", "MemberVisibilityCanBePrivate")
-
 package com.jorfald.friender
 
 import android.content.Context

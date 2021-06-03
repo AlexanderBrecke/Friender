@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         navController = findNavController(R.id.nav_host_fragment)
-//        var image = "https://www.wkbn.com/wp-content/uploads/sites/48/2021/05/e175d19a8a63442f8d5a3159123c0f23-2-3-1.jpg?w=876"
 
     }
 

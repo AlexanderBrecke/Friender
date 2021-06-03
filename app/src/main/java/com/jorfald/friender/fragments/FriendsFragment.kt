@@ -12,13 +12,11 @@ import com.jorfald.friender.R
 import com.jorfald.friender.adapters.FriendsAdapter
 import com.jorfald.friender.database.PersonObject
 import com.jorfald.friender.interfaces.IRecyclerViewEventListener
-import com.jorfald.friender.viewmodels.FriendsViewModel
 import com.jorfald.friender.viewmodels.PersonViewModel
-import kotlinx.android.synthetic.main.fragment_friends.*
 
 class FriendsFragment: Fragment(), IRecyclerViewEventListener {
 
-    private lateinit var viewModel:FriendsViewModel
+    private lateinit var viewModel:PersonViewModel
 
     private lateinit var recyclerView:RecyclerView
     private lateinit var recyclerAdapter:FriendsAdapter
@@ -30,7 +28,7 @@ class FriendsFragment: Fragment(), IRecyclerViewEventListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel = ViewModelProvider(this).get(FriendsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(PersonViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_friends, container, false)
 
         recyclerView = root.findViewById(R.id.friends_recycler)

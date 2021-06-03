@@ -15,8 +15,12 @@ import com.jorfald.friender.repositories.FriendRepository
 class PersonViewModel:ViewModel() {
 
     private val friendRepo = FriendRepository()
+
     private val _randomPersonLiveData = MutableLiveData<PersonObject>()
     val randomPerson = _randomPersonLiveData
+
+    private val _friendsList = MutableLiveData<List<PersonObject>>()
+    val friendsList = _friendsList
 
     private fun getRandomPersonFromApi(errorCallBack: () -> Unit){
         friendRepo.getRandomUserObject {
@@ -40,6 +44,20 @@ class PersonViewModel:ViewModel() {
                 friendRepo.addFriend(it)
             }
         }
+    }
+
+    fun getAllFriends(){
+        Utils.runFunctionAsCoroutine {
+            val allFriends = friendRepo.getAllFriends()
+            if(_friendsList.value != allFriends) _friendsList.postValue(allFriends)
+        }
+    }
+
+    fun removeFriend(friendToRemove:PersonObject){
+        Utils.runFunctionAsCoroutine {
+            friendRepo.deleteFriend(friendToRemove)
+        }
+        getAllFriends()
     }
 
 }
